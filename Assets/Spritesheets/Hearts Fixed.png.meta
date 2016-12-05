@@ -1,0 +1,188 @@
+fileFormatVersion: 2
+guid: 3ef3d99a5673e4f2abb94439b0a0e512
+timeCreated: 1480908453
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Hearts Fixed_6
+    21300002: Hearts Fixed_5
+    21300004: Hearts Fixed_4
+    21300006: Hearts Fixed_3
+    21300008: Hearts Fixed_2
+    21300010: Hearts Fixed_1
+    21300012: Hearts Fixed_0
+    21300014: Hearts Fixed_7
+    21300016: Hearts Fixed_8
+    21300018: Hearts Fixed_9
+    21300020: Hearts Fixed_10
+    21300022: Hearts Fixed_11
+    21300024: Hearts Fixed_12
+    21300026: Hearts Fixed_13
+    21300028: Hearts Fixed_14
+    21300030: Hearts Fixed_15
+    21300032: Hearts Fixed_16
+    21300034: Hearts Fixed_17
+    21300036: Hearts Fixed_18
+    21300038: Hearts Fixed_19
+    21300040: Hearts Fixed_20
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 18
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Hearts Fixed_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 90
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hearts Fixed_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 75
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hearts Fixed_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 60
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hearts Fixed_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 45
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hearts Fixed_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 30
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hearts Fixed_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 15
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Hearts Fixed_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 51
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
