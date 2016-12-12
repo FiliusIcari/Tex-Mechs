@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IDamageable, IKnockbackable
+{
 
 
 
@@ -46,9 +47,7 @@ public class Player : MonoBehaviour {
 	void Update () 
 	{
 		//set animation variables to in script variables
-		anim.SetBool("Grounded", grounded);
-		anim.SetBool ("CanAct", canAct);
-		anim.SetFloat ("Speed", Mathf.Abs(rb.velocity.x));
+
 
 		if(canAct)
 		{
@@ -124,15 +123,19 @@ public class Player : MonoBehaviour {
 			}
 		}
 		horizontalMovement = rb.velocity.x;
+
+		anim.SetBool("Grounded", grounded);
+		anim.SetBool ("CanAct", canAct);
+		anim.SetFloat ("Speed", Mathf.Abs(rb.velocity.x));
 			
 	}
 
-	public void damage(int dmg)
+	public void Damage(int dmg)
 	{
 		curHealth = curHealth - dmg;
 	}
 
-	public void knockback(float hitstunDur, Vector2 knockbackPwr, Vector3 knockbackOri)
+	public void Knockback(float hitstunDur, Vector2 knockbackPwr, Vector3 knockbackOri, bool knockbackTypeForce)
 	{
 		float intX; //Intensity of X
 		float intY; //Intensity of Y
@@ -142,12 +145,24 @@ public class Player : MonoBehaviour {
 		intY=Mathf.Abs(((transform.position.y - knockbackOri.y)/(transform.position.x - knockbackOri.x)*intX));
 
 		//Lmao there goes performance for the whole program
+		//TODO
+		//Update: This whole clusterfuck can be fixed with a simple Vector2 for direction and the normalize function.
 
 		//Set new velocity for knockback
-		rb.velocity = (new Vector3( 
-			Mathf.Sign((transform.position.x - knockbackOri.x)) * intX * knockbackPwr.x, 
-			Mathf.Sign((transform.position.y - knockbackOri.y)) * intY * knockbackPwr.y,
-			0));
+		if (!knockbackTypeForce) 
+		{
+			rb.velocity = (new Vector3 (
+				Mathf.Sign ((transform.position.x - knockbackOri.x)) * intX * knockbackPwr.x, 
+				Mathf.Sign ((transform.position.y - knockbackOri.y)) * intY * knockbackPwr.y,
+				0));
+		}
+		if (knockbackTypeForce) 
+		{
+			rb.AddForce(new Vector3 (
+				Mathf.Sign ((transform.position.x - knockbackOri.x)) * intX * knockbackPwr.x, 
+				Mathf.Sign ((transform.position.y - knockbackOri.y)) * intY * knockbackPwr.y,
+				0));
+		}
 
 
 		StartCoroutine (hitstun (hitstunDur));
@@ -165,7 +180,7 @@ public class Player : MonoBehaviour {
 		sr.color = Color.white;
 	}
 
-	void Die()
+	public void Die()
 	{
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
