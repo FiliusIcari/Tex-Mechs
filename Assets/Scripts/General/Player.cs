@@ -5,40 +5,37 @@ using UnityEngine.SceneManagement;
 
 
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour, IDamageable, IKnockbackable
+{
 
 
 
-	public float speed = 50f;
+	public float speed;
 	public float horizontalMovement;
-	public float jumpPower = 150f;
-	public float jumpHeight = 2; //Not used at the same time as jumpPower
-	public float maxSpeed = 3;
-	public float maxYSpeed = 3;
+	public float jumpHeight;
+	public float maxSpeed;
+	public float maxYSpeed;
+	public int curHealth;
+	public int maxHealth;
 
-	public float frictionConstant = 0f;
-
-	//public Text jumpCount;
+	public float frictionConstant;
 
 	public bool grounded;
 	public bool canAct;
 	public bool jetpacking;
 	public bool hasJetpack;
+	public int jumpNumber = 0;
 
 	private Rigidbody2D rb;
 	private Animator anim;
 	private SpriteRenderer sr;
-	public int jumpNumber = 0;
-
-	public int curHealth;
-	public int maxHealth = 6;
 
 	void Start ()
 	{
+		//Get relevant components
 		rb = gameObject.GetComponent<Rigidbody2D>();
 		anim = gameObject.GetComponent<Animator> ();
 		sr = gameObject.GetComponent<SpriteRenderer> ();
-		//Get relevant components
 
 		canAct = true;
 		//duh
@@ -49,15 +46,13 @@ public class Player : MonoBehaviour {
 
 	void Update () 
 	{
-		anim.SetBool("Grounded", grounded);
-		anim.SetBool ("CanAct", canAct);
+		//set animation variables to in script variables
 
-		//anim.SetFloat ("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
-		anim.SetFloat ("Speed", Mathf.Abs(rb.velocity.x));
-		//Choose one, one is set for input and other for actual velocity
 
 		if(canAct)
 		{
+			//Flip sprites depending on input direction. Could be changed like above if desired.
+			//Currently in if(grounded) to keep direction in air for aiming, etc. Doesn't need to be, could be changed. Game design thing.
 			if (grounded) 
 			{
 				if (Input.GetAxis ("Horizontal") < -0.1f) {
@@ -67,7 +62,6 @@ public class Player : MonoBehaviour {
 					transform.localScale = new Vector3 (1, 1, 1);
 				}
 			}
-			//Flip sprites depending on input direction. Could be changed like above if desired.
 
 			if (Input.GetButton ("Jump") && hasJetpack) 
 			{
@@ -75,13 +69,14 @@ public class Player : MonoBehaviour {
 			}
 		}
 
+		//basic health stuff. keep health at max, die at 0.
 		if (curHealth > maxHealth) {
 			curHealth = maxHealth;
 		}
 		if (curHealth <= 0) {
+			curHealth = 0;
 			Die ();
 		}
-		//Basic health stuff
 	}
 
 	void FixedUpdate ()
@@ -98,6 +93,7 @@ public class Player : MonoBehaviour {
 			}
 			//basic shitty jumping
 
+			//Movement. Ensures not adding to max velocity in either direction
 			if(rb.velocity.x > maxSpeed && x<0)
 			{
 				rb.AddForce ((Vector2.right * speed) * x);
@@ -110,7 +106,6 @@ public class Player : MonoBehaviour {
 			{
 				rb.AddForce ((Vector2.right * speed) * x);
 			}
-			//movement
 			if (Mathf.Abs (rb.velocity.y) < maxYSpeed) 
 				{
 					//Jetpack stuff
@@ -118,6 +113,7 @@ public class Player : MonoBehaviour {
 				
 		}
 
+		//Friction and stopping below 0.01 velocity
 		if (x == 0 && grounded && rb.velocity.x != 0) 
 		{
 			rb.velocity = new Vector2 (rb.velocity.x * frictionConstant, rb.velocity.y);
@@ -126,31 +122,49 @@ public class Player : MonoBehaviour {
 				rb.velocity = new Vector2(0,rb.velocity.y);
 			}
 		}
-		//Friction and stopping
 		horizontalMovement = rb.velocity.x;
+
+		anim.SetBool("Grounded", grounded);
+		anim.SetBool ("CanAct", canAct);
+		anim.SetFloat ("Speed", Mathf.Abs(rb.velocity.x));
 			
 	}
 
-	public void damage(int dmg)
+	public void Damage(int dmg)
 	{
 		curHealth = curHealth - dmg;
 	}
 
-	public void knockback(float hitstunDur, Vector2 knockbackPwr, Vector3 knockbackOri)
+	public void Knockback(float hitstunDur, Vector2 knockbackPwr, Vector3 knockbackOri, bool knockbackTypeForce)
 	{
-		float intX;
-		float intY;
+		float intX; //Intensity of X
+		float intY; //Intensity of Y
+
+		//set proportional to each other, total value of 1(circle stuff).
 		intX=Mathf.Sqrt(1/(1+Mathf.Pow(((transform.position.y - knockbackOri.y)/(transform.position.x - knockbackOri.x)),2)));
 		intY=Mathf.Abs(((transform.position.y - knockbackOri.y)/(transform.position.x - knockbackOri.x)*intX));
 
-		//work on the ABS issue with 1+whatever
-		//Also fix the problem of shooting off screen. 
 		//Lmao there goes performance for the whole program
+		//TODO
+		//Update: This whole clusterfuck can be fixed with a simple Vector2 for direction and the normalize function.
 
-		rb.velocity = (new Vector3( 
-			Mathf.Sign((transform.position.x - knockbackOri.x)) * intX * knockbackPwr.x, 
-			Mathf.Sign((transform.position.y - knockbackOri.y)) * intY * knockbackPwr.y,
-			0));
+		//Set new velocity for knockback
+		if (!knockbackTypeForce) 
+		{
+			rb.velocity = (new Vector3 (
+				Mathf.Sign ((transform.position.x - knockbackOri.x)) * intX * knockbackPwr.x, 
+				Mathf.Sign ((transform.position.y - knockbackOri.y)) * intY * knockbackPwr.y,
+				0));
+		}
+		if (knockbackTypeForce) 
+		{
+			rb.AddForce(new Vector3 (
+				Mathf.Sign ((transform.position.x - knockbackOri.x)) * intX * knockbackPwr.x, 
+				Mathf.Sign ((transform.position.y - knockbackOri.y)) * intY * knockbackPwr.y,
+				0));
+		}
+
+
 		StartCoroutine (hitstun (hitstunDur));
 	}
 
@@ -166,13 +180,9 @@ public class Player : MonoBehaviour {
 		sr.color = Color.white;
 	}
 
-	void Die()
+	public void Die()
 	{
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().buildIndex);
 	}
-	//void jumpCountUpdateUI()
-	//{
-	//	jumpCount.text = "Jump Count: " + jumpNumber.ToString ();
-	//}
 
 }
